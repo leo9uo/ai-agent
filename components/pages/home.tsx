@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react";
-import SearchView from "@/components/SearchView";
-import ChatView from "@/components/ChatView";
+import SearchView from "@/components/features/search/search-view";
+import ChatView from "@/components/features/chat/chat-view";
 import { ChatProvider } from "@/context/ChatProvider";
 import { AppProvider } from "@/context/AppProvider";
 

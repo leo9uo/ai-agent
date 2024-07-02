@@ -19,7 +19,7 @@ interface RetrievedFilesProps {
     symbol: string;
 }
 
-export function StockFiles({ symbol }: RetrievedFilesProps) {
+export function FilesExplorer({ symbol }: RetrievedFilesProps) {
     const isMobile = useIsMobile();
 
     const { data: incomeStatement, isLoading: isLoadingIncomeStatement } = useIncomeStatement(symbol);

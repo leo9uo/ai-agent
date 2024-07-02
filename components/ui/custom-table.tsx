@@ -110,7 +110,7 @@ export const CustomTable = ({ title, content_dict, rows, cols }: CustomTableProp
             columnVisibility,
             rowSelection,
         },
-        initialState: { pagination: { pageSize: 10 } }, // initial page size
+        initialState: { pagination: { pageSize: 5 } }, // initial page size
     });
 
     return (

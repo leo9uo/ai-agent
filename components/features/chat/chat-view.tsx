@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
-import { ChatInterface } from "@/components/ChatInterface";
-import { StockFiles } from "@/components/StockFiles";
+import { Messages } from "@/components/features/chat/messages"
+import { FilesExplorer } from "@/components/features/chat/files-explorer";
 import { ChatInput } from "@/components/ui/chat-input";
 import useIsMobile from "@/hooks/useIsMobile";
 
@@ -41,7 +41,7 @@ const ChatView: React.FC<ChatViewProps> = ({ selectedSymbol, onReturn }) => {
                     <ResizablePanelGroup direction="horizontal" className="h-full rounded-lg border">
                         <ResizablePanel defaultSize={60} minSize={30}>
                             <ScrollArea className="h-full pr-4">
-                                <ChatInterface />
+                                <Messages />
                             </ScrollArea>
                         </ResizablePanel>
 
@@ -49,14 +49,14 @@ const ChatView: React.FC<ChatViewProps> = ({ selectedSymbol, onReturn }) => {
 
                         <ResizablePanel minSize={20}>
                             <ScrollArea className="h-full pr-4">
-                                <StockFiles symbol={selectedSymbol} />
+                                <FilesExplorer symbol={selectedSymbol} />
                             </ScrollArea>
                         </ResizablePanel>
                     </ResizablePanelGroup>
                 ) : (
                     <ScrollArea className="h-full pr-4">
-                        <StockFiles symbol={selectedSymbol} />
-                        <ChatInterface />
+                        <FilesExplorer symbol={selectedSymbol} />
+                        <Messages />
                     </ScrollArea>
                 )}
             </div>

@@ -4,7 +4,7 @@ import { useChatContext } from "@/context/ChatProvider";
 import { useScrollToBottom } from '@/hooks/useScrollToBottom';
 import he from 'he';
 
-export const ChatInterface = () => {
+export const Messages = () => {
     const { messages } = useChatContext();
     const endOfMessagesRef = useScrollToBottom<HTMLDivElement>(messages);
 
@@ -37,4 +37,4 @@ export const ChatInterface = () => {
     );
 };
 
-export default ChatInterface;
+export default Messages;

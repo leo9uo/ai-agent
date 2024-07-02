@@ -1,9 +1,14 @@
 "use client"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { v4 as uuidv4 } from 'uuid'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export function makeId(prefix: string): string {
+  return `${prefix}-${uuidv4()}`;
 }
 
 export function formatUglyDate(dateStr: string): string {
@@ -13,10 +18,5 @@ export function formatUglyDate(dateStr: string): string {
 
   const date = new Date(Date.UTC(year, month, day));
 
-  return date.toISOString().split('T')[0];
-}
-
-export function today(): string {
-  const date = new Date();
   return date.toISOString().split('T')[0];
 }
