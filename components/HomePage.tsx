@@ -10,7 +10,6 @@ const HomePage: React.FC = () => {
 
     return (
         <AppProvider>
-
             <main className="flex flex-col h-screen p-4 md:p-12 bg-gray-50">
                 {!selectedSymbol ? (
                     <SearchView onSymbolSelect={setSelectedSymbol} />
