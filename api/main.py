@@ -2,9 +2,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 import json
-from utils.yfinance_utils import YFinanceUtils
-from utils.sec_api_utils import SecApiUtils
-from utils.finnhub_utils import FinnhubUtils
+from api.services.yfinance_utils import YFinanceUtils
+from api.services.sec_api_utils import SecApiUtils
+from api.services.finnhub_utils import FinnhubUtils
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()

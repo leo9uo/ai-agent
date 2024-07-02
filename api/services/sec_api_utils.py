@@ -3,9 +3,9 @@ from typing import Annotated
 from dotenv import load_dotenv
 import sys
 from sec_api import ExtractorApi
-from utils.finnhub_utils import FinnhubUtils
+from api.services.finnhub_utils import FinnhubUtils
 
-load_dotenv(".env")
+load_dotenv("api/.env")
 
 class SecApiUtils:
     def __init__(self):
