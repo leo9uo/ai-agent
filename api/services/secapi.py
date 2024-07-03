@@ -15,7 +15,6 @@ class SecApiUtils:
             raise Exception("Missing SEC_API_KEY in .env")
         else:
             sec_api_extractor = ExtractorApi(api_key=os.environ.get("SEC_API_KEY"))
-            print("\nSuccessfully initialized sec api extractor!\n")
             return sec_api_extractor
 
     def get_10k_section(
