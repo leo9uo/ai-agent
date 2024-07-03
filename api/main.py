@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import json
 from services.yfinance import YFinanceUtils
-from services.sec_api import SecApiUtils
+from api.services.secapi import SecApiUtils
 from services.finnhub import FinnhubUtils
 from fastapi.middleware.cors import CORSMiddleware
 
