@@ -197,7 +197,7 @@ const NewsItem: React.FC<NewsItemProps> = ({ news, isMobile }) => (
                 <h3 className="font-semibold mb-2">{news.headline}</h3>
                 {!isMobile && (
                     <div>
-                        <p className="italic text-gray-500">{news.summary}</p>
+                        <p className="italic text-gray-500">{news.summary.length > 200 ? `${news.summary.substring(0, 200)}[...]` : `${news.summary}`}</p>
                         <p className="text-xs text-gray-400 mt-1">{formatUglyDate(news.date)}</p>
                     </div>
                 )}

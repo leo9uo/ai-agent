@@ -7,10 +7,10 @@ from collections import defaultdict
 import finnhub
 from dotenv import load_dotenv
 import sys
-from api.utils.index import today
+from utils.index import today
 from typing import List, Optional
 
-load_dotenv("api/.env")
+load_dotenv(".env")
 
 ## FINNHUB API DOCUMENTATION: https://finnhub.io/docs/api
 class FinnhubUtils:
