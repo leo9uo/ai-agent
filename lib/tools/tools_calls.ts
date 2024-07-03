@@ -17,8 +17,8 @@ export const TOOLS_NAMES: ToolsNames = {
     "get_company_profile_tool": fetchCompanyProfile,
     "get_company_news_tool": fetchCompanyNews,
     "get_basic_financials_tools": fetchBasicFinancials,
-    "get_income_statement_tool": fetchIncomeStatement,
-    "get_10k_section_tool": fetchSecSection,
+    "get_income_stmt_tool": fetchIncomeStatement,
+    "get_10k_section_tool": fetch10kSection,
     "get_sec_filing_tool": fetchSecFiling
 }
 
@@ -36,23 +36,14 @@ export async function fetchIncomeStatement(symbol: string): Promise<IncomeStatem
     return data;
 }
 
-
-export async function fetchSecSection(ticker_symbol: string, section: string, fyear?: string, report_address?: string): Promise<SecSectionResponse> {
+export async function fetch10kSection(html_report_url: string, section: string): Promise<SecSectionResponse> {
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const url = new URL(`${baseUrl}/api/py/get_10k_section`);
+    const params = new URLSearchParams({
+        html_report_url,
+        section
+    });
 
-    url.searchParams.append('ticker_symbol', ticker_symbol);
-    url.searchParams.append('section', section);
-
-    if (fyear) {
-        url.searchParams.append('fyear', fyear);
-    }
-
-    if (report_address) {
-        url.searchParams.append('report_address', report_address);
-    }
-
-    const response = await fetch(url.toString());
+    const response = await fetch(`${baseUrl}/api/py/get_10k_section?${params.toString()}`);
 
     if (!response.ok) {
         const errorDetails = await response.json();
@@ -62,7 +53,6 @@ export async function fetchSecSection(ticker_symbol: string, section: string, fy
     const data: SecSectionResponse = await response.json();
     return data;
 }
-
 
 export async function fetchBasicFinancials(symbol: string, selectedColumns?: string[]): Promise<BasicFinancialsResponse> {
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -148,3 +138,5 @@ export async function fetchSecFiling(symbol: string, form?: string, fromDate?: s
     const data: SecFilingResponse = await response.json();
     return data;
 }
+
+

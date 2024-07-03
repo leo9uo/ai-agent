@@ -166,29 +166,21 @@ const get_income_stmt_tool = {
 const get_10k_section_tool = {
     "type": "function",
     "function": {
-        "name": "get_10k_section",
-        "description": "Get a specific section of a 10-K report from the SEC API.",
+        "name": "fetch10kSection",
+        "description": "Get a specific section of a 10-K report from the SEC API for a given company's HTML report URL.",
         "parameters": {
             "type": "object",
             "properties": {
-                "ticker_symbol": {
+                "html_report_url": {
                     "type": "string",
-                    "description": "Stock ticker symbol of the company."
-                },
-                "fyear": {
-                    "type": "string",
-                    "description": "fiscal year of the 10-K report"
+                    "description": "URL of the 10-K report HTML file from the SEC EDGAR database."
                 },
                 "section": {
                     "type": "string",
-                    "description": "Section of the 10-K report to extract, should be in [1, 1A, 1B, 2, 3, 4, 5, 6, 7, 7A, 8, 9, 9A, 9B, 10, 11, 12, 13, 14, 15]"
-                },
-                "report_address": {
-                    "type": "string",
-                    "description": "URL of the 10-K report",
+                    "description": "Section of the 10-K report to extract. Should be one of: '1', '1A', '1B', '2', '3', '4', '5', '6', '7', '7A', '8', '9', '9A', '9B', '10', '11', '12', '13', '14', '15'."
                 }
             },
-            "required": ["ticker_symbol", "section"]
+            "required": ["html_report_url", "section"]
         }
     }
 }

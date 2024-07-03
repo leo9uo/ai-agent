@@ -1,19 +1,22 @@
 'use client'
+import { useMemo } from 'react';
 
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, UseQueryResult } from '@tanstack/react-query'
 import {
     fetchIncomeStatement,
     fetchBasicFinancials,
     fetchCompanyProfile,
     fetchCompanyNews,
-    fetchSecFiling
+    fetchSecFiling,
+    fetch10kSection
 } from '@/lib/tools/tools_calls'
 import type {
     IncomeStatementResponse,
     BasicFinancialsResponse,
     CompanyProfileResponse,
     CompanyNewsResponse,
-    SecFilingResponse
+    SecFilingResponse,
+    SecSectionResponse
 } from '@/lib/tools/tools_types'
 
 export const useIncomeStatement = (symbol: string) => {
@@ -51,6 +54,19 @@ export const useSecFiling = (symbol: string, form?: string, fromDate?: string, t
     })
 }
 
+const use10kSection = (html_report_url: string | undefined, section: string): UseQueryResult<SecSectionResponse | null, Error> => {
+    return useQuery<SecSectionResponse | null, Error>({
+        queryKey: ['10kSection', html_report_url, section],
+        queryFn: async () => {
+            if (!html_report_url) {
+                return null;
+            }
+            return fetch10kSection(html_report_url, section);
+        },
+        enabled: !!html_report_url,
+    });
+};
+
 export const useAggregatedStockData = (symbol: string) => {
     const incomeStatement = useIncomeStatement(symbol);
     const basicFinancials = useBasicFinancials(symbol, ['revenueTTm', 'debtEquityTTM', 'peRatioTTM', 'pegRatioTTM', 'priceToBookTTM', 'priceToSalesTTM', 'dividendYieldTTM', 'roeTTM']);
@@ -58,15 +74,31 @@ export const useAggregatedStockData = (symbol: string) => {
     const companyNews = useCompanyNews(symbol);
     const secFiling = useSecFiling(symbol, "10-K");
 
-    const isLoading = incomeStatement.isLoading || basicFinancials.isLoading || companyProfile.isLoading || companyNews.isLoading || secFiling.isLoading;
-    const isError = incomeStatement.isError || basicFinancials.isError || companyProfile.isError || companyNews.isError || secFiling.isError;
+    const html_report_url = secFiling.data?.filing.filingUrl;
+
+    const sections10k = ['7', '1A', '1', '3', '5'].map(section =>
+        use10kSection(html_report_url, section)
+    );
+
+    const isLoading = [
+        incomeStatement, basicFinancials, companyProfile, companyNews, secFiling,
+        ...sections10k
+    ].some(query => query.isLoading);
+
+    const isError = [
+        incomeStatement, basicFinancials, companyProfile, companyNews, secFiling,
+        ...sections10k
+    ].some(query => query.isError);
 
     const data = {
         incomeStatement: incomeStatement.data,
         basicFinancials: basicFinancials.data,
         companyProfile: companyProfile.data,
         companyNews: companyNews.data,
-        secFiling: secFiling.data
+        secFiling: secFiling.data,
+        // sections10k: Object.fromEntries(
+        //     sections10k.map((query, index) => [['1A'][index], query.data])
+        // ),
     };
 
     return { data, isLoading, isError };

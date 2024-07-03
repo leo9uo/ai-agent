@@ -40,6 +40,7 @@ export const ChatProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
             setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
             while (true) {
+                setIsLoading(false);
                 const { done, value } = await reader.read();
                 if (done) break;
 

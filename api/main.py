@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import json
 from services.yfinance import YFinanceUtils
-from api.services.secapi import SecApiUtils
+from services.secapi import SecApiUtils
 from services.finnhub import FinnhubUtils
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -37,33 +37,6 @@ async def get_income_statement(symbol: str):
     try:
         income_stmt = yfin.get_income_stmt()
         return {"symbol": symbol, "income_statement": income_stmt}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-class SecSectionResponse(BaseModel):
-    symbol: str
-    section: str
-    fiscal_year: Optional[str]
-    section_text: str
-
-@app.get("/api/py/get_10k_section", response_model=SecSectionResponse)
-async def get_10k_section(ticker_symbol: str, section: str, fyear: Optional[str] = None, report_address: Optional[str] = None):
-    """Get a specific section of a 10-K report from the SEC API."""
-    if not ticker_symbol or not section:
-        raise HTTPException(status_code=400, detail="Ticker symbol and section are required.")
-    
-    sec_api_extractor = SecApiUtils()
-    try:
-        section_text = sec_api_extractor.get_10k_section(ticker_symbol=ticker_symbol, section=section, fyear=fyear, report_address=report_address)
-        return {
-            "symbol": ticker_symbol,
-            "section": section,
-            "fiscal_year": fyear,
-            "section_text": section_text
-        }
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -168,6 +141,33 @@ async def get_sec_filing(symbol: str, form: Optional[str] = "10-K", from_date: O
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
+    
+    
+class SecSectionResponse(BaseModel):
+    html_report_url: str
+    section: str
+    section_text: str
+
+@app.get("/api/py/get_10k_section", response_model=SecSectionResponse)
+async def get_10k_section(html_report_url: str, section: str):
+    """Get a specific section of a 10-K report from the SEC API."""
+    if not html_report_url or not section:
+        raise HTTPException(status_code=400, detail="HTML report URL and section are required.")
+    
+    sec_api_extractor = SecApiUtils()
+    try:
+        section_text = sec_api_extractor.get_10k_section(html_report_url=html_report_url, section=section)
+        return {
+            "html_report_url": html_report_url,
+            "section": section,
+            "section_text": section_text
+        }
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 
 if __name__ == "__main__":
     import uvicorn
