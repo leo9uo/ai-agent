@@ -15,6 +15,7 @@ origins = [
 ]
 
 api_base_url = os.getenv('NEXT_PUBLIC_API_BASE_URL')
+
 if api_base_url:
     origins.append(api_base_url)
 
