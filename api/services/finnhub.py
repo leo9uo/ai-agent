@@ -7,7 +7,7 @@ from collections import defaultdict
 import finnhub
 from dotenv import load_dotenv
 import sys
-from utils.index import today
+from api.utils.index import today
 from typing import List, Optional
 
 load_dotenv(".env")
@@ -18,10 +18,10 @@ class FinnhubUtils:
         self.finnhub_client = self.init_finnhub_client()
         
     def init_finnhub_client(self):
-        if os.environ.get("FINNHUB_API_KEY") is None:
+        if os.environ.get("NEXT_PUBLIC_FINNHUB_API_KEY") is None:
             raise Exception("Missing FINNHUB_API_KEY in .env")
         else:
-            finnhub_client = finnhub.Client(api_key=os.environ.get("FINNHUB_API_KEY"))
+            finnhub_client = finnhub.Client(api_key=os.environ.get("NEXT_PUBLIC_FINNHUB_API_KEY"))
             return finnhub_client
 
     def get_company_profile(self, symbol: Annotated[str, "ticker symbol"]) -> str:

@@ -1,4 +1,3 @@
-import pandas as pd
 from typing import Annotated
 from datetime import datetime, timedelta
 

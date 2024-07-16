@@ -11,10 +11,10 @@ class SecApiUtils:
         self.sec_api_extractor = self.init_sec_api_client()
 
     def init_sec_api_client(self):
-        if os.environ.get("SEC_API_KEY") is None:
+        if os.environ.get("NEXT_PUBLIC_SEC_API_KEY") is None:
             raise Exception("Missing SEC_API_KEY in .env")
         else:
-            sec_api_extractor = ExtractorApi(api_key=os.environ.get("SEC_API_KEY"))
+            sec_api_extractor = ExtractorApi(api_key=os.environ.get("NEXT_PUBLIC_SEC_API_KEY"))
             return sec_api_extractor
 
     def get_10k_section(
