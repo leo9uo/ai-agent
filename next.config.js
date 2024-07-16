@@ -11,29 +11,21 @@ const nextConfig = {
     },
   },
   rewrites: async () => {
-    return [
+    const rewriteRules = [
       {
         source: "/api/py/:path*",
-        destination:
-          process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:8000/api/py/:path*"
-            : "/api/",
+        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/py/:path*`,
       },
       {
         source: "/docs",
-        destination:
-          process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:8000/api/py/docs"
-            : "/api/py/docs",
+        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/py/docs`,
       },
       {
         source: "/openapi.json",
-        destination:
-          process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:8000/api/py/openapi.json"
-            : "/api/py/openapi.json",
+        destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/py/openapi.json`,
       },
     ];
+    return rewriteRules;
   },
 };
 

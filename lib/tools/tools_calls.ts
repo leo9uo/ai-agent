@@ -30,8 +30,9 @@ interface ApiKeys {
 }
 
 
+
 export async function fetchIncomeStatement(symbol: string, apiKeys: ApiKeys): Promise<IncomeStatementResponse> {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
     const response = await fetch(`${baseUrl}/api/py/get_income_statement?symbol=${symbol}`);
 
     if (!response.ok) {
@@ -62,7 +63,7 @@ export async function fetchIncomeStatement(symbol: string, apiKeys: ApiKeys): Pr
 // }
 
 export async function fetchBasicFinancials(symbol: string, apiKeys: ApiKeys, selectedColumns?: string[]): Promise<BasicFinancialsResponse> {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
     const params = new URLSearchParams({ symbol });
 
     if (selectedColumns) {
@@ -85,7 +86,7 @@ export async function fetchBasicFinancials(symbol: string, apiKeys: ApiKeys, sel
 }
 
 export async function fetchCompanyProfile(symbol: string, apiKeys: ApiKeys): Promise<CompanyProfileResponse> {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
     const response = await fetch(`${baseUrl}/api/py/get_company_profile?symbol=${symbol}`, {
         headers: {
             'X-Finnhub-API-Key': apiKeys.finnhubApiKey
@@ -103,7 +104,7 @@ export async function fetchCompanyProfile(symbol: string, apiKeys: ApiKeys): Pro
 
 
 export async function fetchCompanyNews(symbol: string, apiKeys: ApiKeys, start_date?: string, end_date?: string, max_news_num: number = 10): Promise<CompanyNewsResponse> {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
     const params = new URLSearchParams({ symbol });
 
     if (start_date) params.append('start_date', start_date);
@@ -126,7 +127,7 @@ export async function fetchCompanyNews(symbol: string, apiKeys: ApiKeys, start_d
 }
 
 export async function fetchSecFiling(symbol: string, apiKeys: ApiKeys, form?: string, fromDate?: string, toDate?: string): Promise<SecFilingResponse> {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
     const params = new URLSearchParams({ symbol });
 
     if (form) params.append('form', form);

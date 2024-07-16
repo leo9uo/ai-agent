@@ -5,22 +5,26 @@ import json
 from api.services.yfinance import YFinanceUtils
 from api.services.finnhub import FinnhubUtils
 from fastapi.middleware.cors import CORSMiddleware
+import os 
 
 app = FastAPI()
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",   
-    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8000",   
 ]
+
+api_base_url = os.getenv('NEXT_PUBLIC_API_BASE_URL')
+if api_base_url:
+    origins.append(api_base_url)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  
     allow_credentials=True,
-    allow_methods=["*"], 
-    allow_headers=["*"], 
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-
 class IncomeStatementResponse(BaseModel):
     symbol: str
     income_statement: dict
