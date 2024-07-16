@@ -5,24 +5,14 @@ import pandas as pd
 from datetime import datetime
 from collections import defaultdict
 import finnhub
-from dotenv import load_dotenv
 import sys
 from api.utils.index import today
 from typing import List, Optional
 
-load_dotenv(".env")
-
 ## FINNHUB API DOCUMENTATION: https://finnhub.io/docs/api
 class FinnhubUtils:
-    def __init__(self):
-        self.finnhub_client = self.init_finnhub_client()
-        
-    def init_finnhub_client(self):
-        if os.environ.get("NEXT_PUBLIC_FINNHUB_API_KEY") is None:
-            raise Exception("Missing FINNHUB_API_KEY in .env")
-        else:
-            finnhub_client = finnhub.Client(api_key=os.environ.get("NEXT_PUBLIC_FINNHUB_API_KEY"))
-            return finnhub_client
+    def __init__(self, api_key: str):
+        self.finnhub_client = finnhub.Client(api_key=api_key)
 
     def get_company_profile(self, symbol: Annotated[str, "ticker symbol"]) -> str:
         """Retrieve and format a detailed profile of a company using its stock ticker symbol."""
@@ -195,13 +185,15 @@ class FinnhubUtils:
             return {}
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python finnhub_utils.py <SYMBOL>")
+    import sys
+    if len(sys.argv) < 3:
+        print("Usage: python finnhub_utils.py <API_KEY> <SYMBOL>")
         sys.exit(1) 
 
-    symbol = sys.argv[1]
-    fin = FinnhubUtils()
-
+    api_key = sys.argv[1]
+    symbol = sys.argv[2]
+    fin = FinnhubUtils(api_key)
+    
     # company_profile = fin.get_company_profile(symbol)    
     # basic_fin = fin.get_basic_financials(symbol)
     # company_news = fin.get_company_news(symbol, "2024-01-01", "2024-10-02", 10)

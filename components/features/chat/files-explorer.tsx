@@ -14,6 +14,7 @@ import {
     useCompanyNews,
     useSecFiling
 } from "@/hooks/useStockData"
+import { useAppContext } from "@/context/AppProvider"
 
 interface RetrievedFilesProps {
     symbol: string;
@@ -21,12 +22,13 @@ interface RetrievedFilesProps {
 
 export function FilesExplorer({ symbol }: RetrievedFilesProps) {
     const isMobile = useIsMobile();
+    const { apiKeys } = useAppContext();
 
-    const { data: incomeStatement, isLoading: isLoadingIncomeStatement } = useIncomeStatement(symbol);
-    const { data: basicFinancials, isLoading: isLoadingBasicFinancials } = useBasicFinancials(symbol, ['revenueTTm', 'debtEquityTTM', 'peRatioTTM', 'pegRatioTTM', 'priceToBookTTM', 'priceToSalesTTM', 'dividendYieldTTM', 'roeTTM']);
-    const { data: companyProfile, isLoading: isLoadingCompanyProfile } = useCompanyProfile(symbol);
-    const { data: companyNews, isLoading: isLoadingCompanyNews } = useCompanyNews(symbol);
-    const { data: secFiling, isLoading: isLoadingSecFiling } = useSecFiling(symbol, "10-K");
+    const { data: incomeStatement, isLoading: isLoadingIncomeStatement } = useIncomeStatement(symbol, apiKeys);
+    const { data: basicFinancials, isLoading: isLoadingBasicFinancials } = useBasicFinancials(symbol, apiKeys, ['revenueTTm', 'debtEquityTTM', 'peRatioTTM', 'pegRatioTTM', 'priceToBookTTM', 'priceToSalesTTM', 'dividendYieldTTM', 'roeTTM']);
+    const { data: companyProfile, isLoading: isLoadingCompanyProfile } = useCompanyProfile(symbol, apiKeys);
+    const { data: companyNews, isLoading: isLoadingCompanyNews } = useCompanyNews(symbol, apiKeys);
+    const { data: secFiling, isLoading: isLoadingSecFiling } = useSecFiling(symbol, apiKeys, "10-K");
 
     if (!symbol) return null;
 

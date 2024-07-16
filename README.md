@@ -26,6 +26,7 @@ An AI-Powered assistant that combines financial data with an intuitive chat inte
 - Node.js (v14 or later)
 - Python (v3.7 or later)
 - npm or yarn
+- API keys for Mistral, Finnhub, and SEC (users will need to obtain these themselves)
 
 
 ## Developing Locally
@@ -63,3 +64,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 The FastApi server will be running on [http://127.0.0.1:8000](http://127.0.0.1:8000) – feel free to change the port in `package.json` (you'll also need to update it in `next.config.js`).
 
+
+## Using the Application
+
+When you first open the application, you'll be prompted to enter your API keys for Mistral, Finnhub, and SEC.
+These keys are stored securely in your browser's memory and are not saved or transmitted elsewhere.
+Once you've entered your API keys, you can start using the investment analysis tools.

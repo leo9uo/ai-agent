@@ -1,21 +1,10 @@
-import os 
 from typing import Annotated
-from dotenv import load_dotenv
 import sys
 from sec_api import ExtractorApi
 
-load_dotenv(".env")
-
 class SecApiUtils:
-    def __init__(self):
-        self.sec_api_extractor = self.init_sec_api_client()
-
-    def init_sec_api_client(self):
-        if os.environ.get("NEXT_PUBLIC_SEC_API_KEY") is None:
-            raise Exception("Missing SEC_API_KEY in .env")
-        else:
-            sec_api_extractor = ExtractorApi(api_key=os.environ.get("NEXT_PUBLIC_SEC_API_KEY"))
-            return sec_api_extractor
+    def __init__(self, api_key: str):
+        self.sec_api_extractor = ExtractorApi(api_key=api_key)
 
     def get_10k_section(
         self,
@@ -49,14 +38,15 @@ class SecApiUtils:
         return section_text
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python secapi.py <HTML_REPORT_URL> <SECTION>")
+    if len(sys.argv) < 4:
+        print("Usage: python secapi.py <API_KEY> <HTML_REPORT_URL> <SECTION>")
         sys.exit(1) 
 
-    html_report_url = sys.argv[1] 
-    section = sys.argv[2]
+    api_key = sys.argv[1]
+    html_report_url = sys.argv[2] 
+    section = sys.argv[3]
 
-    sec_api_extractor = SecApiUtils()
+    sec_api_extractor = SecApiUtils(api_key)
 
     sec_section = sec_api_extractor.get_10k_section(html_report_url=html_report_url, section=section)
     print(sec_section)

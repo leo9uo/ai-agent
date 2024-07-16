@@ -1,17 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { initMistralClient } from "@/app/utils/init";
+import MistralClient from '@mistralai/mistralai'
 import { INVESTMENT_ANALYST_PROMPT } from '@/constants/prompts';
 
 export async function POST(req: NextRequest) {
-    const mistralClient = initMistralClient()
-
+    const mistralApiKey = req.headers.get('X-Mistral-API-Key');
     const { messages, stockData } = await req.json()
 
-    if (!messages || !stockData) {
-        return NextResponse.json({ error: 'Missing messages or stockData' }, { status: 400 })
+    if (!messages || !stockData || !mistralApiKey) {
+        return NextResponse.json({ error: 'Missing messages, stockData, or Mistral API key' }, { status: 400 })
     }
 
     try {
+        const mistralClient = new MistralClient(mistralApiKey);
+
         const mistralMessages = [
             { role: 'system', content: INVESTMENT_ANALYST_PROMPT },
             ...messages.slice(0, -1),

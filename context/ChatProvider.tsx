@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
+import { useAppContext } from '@/context/AppProvider';
 
 type Message = {
     role: 'user' | 'assistant' | 'system';
@@ -18,6 +19,7 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 export const ChatProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const { apiKeys } = useAppContext();
 
     const sendMessage = useCallback(async (content: string, stockData: any) => {
         setIsLoading(true);
@@ -27,7 +29,10 @@ export const ChatProvider: React.FC<React.PropsWithChildren<{}>> = ({ children }
         try {
             const response = await fetch('/api/mistral', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Mistral-API-Key': apiKeys.mistralApiKey,
+                },
                 body: JSON.stringify({ messages: [...messages, userMessage], stockData }),
             });
 

@@ -1,5 +1,6 @@
 import { useAggregatedStockData } from "@/hooks/useStockData";
 import { useChatContext } from "@/context/ChatProvider";
+import { useAppContext } from "@/context/AppProvider";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -15,7 +16,8 @@ type ChatViewProps = {
 };
 
 const ChatView: React.FC<ChatViewProps> = ({ selectedSymbol, onReturn }) => {
-    const { data: stockData, isLoading: isLoadingStock, isError } = useAggregatedStockData(selectedSymbol);
+    const { apiKeys } = useAppContext();
+    const { data: stockData, isLoading: isLoadingStock, isError } = useAggregatedStockData(selectedSymbol, apiKeys);
     const { sendMessage, isLoading: isChatLoading } = useChatContext();
     const isMobile = useIsMobile();
 
@@ -30,7 +32,7 @@ const ChatView: React.FC<ChatViewProps> = ({ selectedSymbol, onReturn }) => {
     return (
         <div className="flex flex-col h-full">
             <div className="flex-none mb-4 flex items-center">
-                <Button onClick={onReturn} className="flex items-center space-x-2">
+                <Button onClick={onReturn} className="flex items-center space-x-2 bg-blue-700 hover:bg-blue-800">
                     <ArrowLeft size={20} />
                     <span>Return to Search</span>
                 </Button>

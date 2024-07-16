@@ -38,7 +38,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, isLoading }
                 }}
             />
 
-            <Button className="absolute bottom-2 right-2"
+            <Button className="absolute bottom-2 right-2 bg-blue-700 hover:bg-blue-800"
                 onClick={(e) => handleSendMessage(e)}
             >
                 <span className="hidden lg:inline mr-2">Send</span>
